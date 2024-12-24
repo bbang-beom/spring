@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:each="todoDto, status:${todoList}">
+		<div>
+			id: <span th:text="${todoDto.id}"></span>
+		</div>
+
+		<div>
+			내용: <span th:text="${todoDto.content}"></span>
+		</div>
+
+		<div>
+			등록일: <span th:text="${todoDto.date}"></span>
+		</div>
+
+		<div>
+			감정표현: <span th:text="${todoDto.emotionId}"></span>
+		</div>
+		<br>
+	</div>
+</body>
+</html>

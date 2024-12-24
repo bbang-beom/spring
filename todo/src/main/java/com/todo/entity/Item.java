@@ -21,7 +21,7 @@ public class Item {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String id;
+	private long id;
 	@Column(nullable = false)
 	private LocalDateTime date;
 	@Column(nullable = false)
