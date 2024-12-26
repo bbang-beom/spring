@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:each="todo, status:${todoList}">
+		<div>
+			id: <span th:text="${todo.id}"></span>
+		</div>
+
+		<div>
+			내용: <span th:text="${todo.content}"></span>
+		</div>
+
+		<div>
+			등록일: <span th:text="${todo.createdDate}"></span>
+		</div>
+
+		<div>
+			달성: <span th:text="${todo.isDone}"></span>
+		</div>
+		<br> 
+	</div>
+	<a href="/updateList">todo 작성</a> 
+	<a href="/updateList">todo 수정</a> 
+	<a href="/delete">todo 삭제</a> 
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!-- layout기능을 사용하기 위해 html태그에 네임스페이스를 추가 -->
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!--
+	 th:replace속성은 해당 속성이 선언된 html태그를 다른 html파일로 치환한다.
+	 fragments 폴더 아래의 header.html 파일의 header영역을 가져온다.
+	 -->
+	 <div th:replace="fragments/header::header"></div>
+	 <!-- layout에서 변경되는 영역을 fragment로 설정 -->
+	 <div layout:fragment="content">
+	 	본문
+	 </div>
+	 <div th:replace="fragments/footer::footer"></div>
+	 
+</body>
+</html>
