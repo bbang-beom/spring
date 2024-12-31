@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import ToolBar from "@mui/material/Toolbar";
-import CarList from "./components/CarList";
 import './App.css';
+import TodoList from "./components/TodoList";
 
 function App() {
   return (
@@ -10,11 +10,11 @@ function App() {
       <AppBar position="static">
         <ToolBar>
           <Typography variant="h6">
-            Carshop
+            Todo
           </Typography>
         </ToolBar>
       </AppBar>
-      <CarList/>
+      <TodoList/>
     </div>
   );
 }

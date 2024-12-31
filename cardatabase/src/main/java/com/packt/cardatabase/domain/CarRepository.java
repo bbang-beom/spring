@@ -7,10 +7,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 // 쿼리 메서드를 포함하려면 리포지터리 클래스에 @RepositoryRestResorce 어노테이션을 추가해야한다.
 // 쿼리 매개변수에는 @Param어노테이션을 지정한다.
 
+@CrossOrigin
 @Repository
 @RepositoryRestResource
 public interface CarRepository extends CrudRepository<Car, Long>{

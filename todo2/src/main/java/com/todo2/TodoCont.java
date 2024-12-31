@@ -7,13 +7,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
+@CrossOrigin
 public class TodoCont {
+	
+	@Autowired
+	private TodoRepo todoRepo;
 	
 	@Autowired
 	TodoSer todoSer;
@@ -32,7 +37,7 @@ public class TodoCont {
 		return "create";
 	}
 	
-	@GetMapping
+	@GetMapping("/todos")
 	public String getList(Todo2 todo, Model model) {
 		List<Todo2> todoList = new ArrayList<>();
 		List<Todo2> lists = todoSer.getList();
@@ -69,5 +74,10 @@ public class TodoCont {
 			}
 		}
 		return "delete";
+	}
+	
+	@RequestMapping("/todos")
+	public Iterable<Todo2> getCars() {
+		return todoRepo.findAll();
 	}
 }
