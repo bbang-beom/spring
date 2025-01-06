@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>예약 내역</title>
+</head>
+<body>
+    <h1>예약 내역</h1>
+    <table border="1">
+        <tr>
+            <th>이벤트 이름</th>
+            <th>티켓 수량</th>
+            <th>공연 일자</th>
+            <th>예매일</th>
+            <th>취소</th>
+        </tr>
+        <tr th:each="ticket : ${tickets}">
+            <td th:text="${ticket.eventName}"></td>
+            <td th:text="${ticket.numberOfTickets}"></td>
+            <td th:text="${#temporals.format(ticket.eventDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(ticket.bookingDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td>
+                <form th:action="@{/reservations/cancel/{ticketId}(ticketId=${ticket.id})}" method="post"
+                      onsubmit="return confirm('정말 예약을 취소하시겠습니까?');">
+                    <button type="submit">취소</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <p><a href="/mypage">마이페이지로 돌아가기</a></p>
+</body>
+</html>
