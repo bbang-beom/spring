@@ -11,31 +11,35 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	@Bean
+	public PasswordEncoder passwordEncoder(){
+		return new BCryptPasswordEncoder();
+	}
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        	.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/mypage/**", "/reservations/**").authenticated()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/auth/login", "/auth/register", "/error", "/css/**", "/js/**").permitAll() // "/error" 허용
+                .anyRequest().authenticated()
             )
-            .formLogin(form -> form
-                .loginPage("/login")
+            .formLogin(login -> login
+                .loginPage("/auth/login")
                 .defaultSuccessUrl("/mypage", true)
+                .failureUrl("/auth/login?error=true")
                 .permitAll()
             )
-            
             .logout(logout -> logout
-                    .logoutSuccessUrl("/")
-                    .permitAll()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .permitAll()
             )
-            .csrf(csrf -> csrf.disable());
+            .csrf(csrf -> csrf.disable()); // 개발 중 CSRF 비활성화
+
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

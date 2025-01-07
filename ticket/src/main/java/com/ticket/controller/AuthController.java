@@ -1,42 +1,44 @@
 package com.ticket.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ticket.entity.User;
-import com.ticket.service.UserService;
+import com.ticket.repository.UserRepository;
 
-@Controller
+@RestController
+@RequestMapping("/auth")
 public class AuthController {
-    private final UserService userService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-        return "register";
+    public AuthController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user, Model model) {
-        try {
-            userService.registerUser(user.getUsername(), user.getPassword());
-            return "redirect:/login";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-            return "register";
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
     }
 
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "login";
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody User user) {
+        return userRepository.findByUsername(user.getUsername())
+                .filter(existingUser -> passwordEncoder.matches(user.getPassword(), existingUser.getPassword()))
+                .map(existingUser -> ResponseEntity.ok("Login successful!"))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password"));
     }
 }

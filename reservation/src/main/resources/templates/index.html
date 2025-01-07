@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Reservation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- 네비게이션 바 추가 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">예약 페이지</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">홈</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my-reservations">내 예약</a> <!-- 예약 목록 링크 추가 -->
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h1 class="text-center">공연 목록</h1>
+    <div class="row">
+        <div class="col-md-4" th:each="event : ${events}">
+            <div class="card mb-4">
+                <img class="card-img-top" th:src="@{/images/{imageName}(imageName=${event.image})}" alt="Event Image">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${event.name}"></h5>
+                    <p class="card-text">
+                        <strong>총 좌석:</strong> <span th:text="${event.totalSeats}"></span><br>
+                        <strong>남은 좌석:</strong> <span th:text="${event.remainingSeats}"></span><br>
+                        <strong>공연 일시:</strong> <span th:text="${event.performanceDate}"></span>
+                    </p>
+                    <a th:href="@{/reserve/{eventId}(eventId=${event.id})}" class="btn btn-primary">예약</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Reserve Ticket</title>
+</head>
+<body>
+    <h1>Reserve for <span th:text="${event.name}"></span></h1>
+    <form action="/reserve" method="post">
+        <input type="hidden" name="userId" value="1"/> <!-- 예시로 사용자의 ID를 하드코딩 -->
+        <input type="hidden" name="eventId" th:value="${event.id}"/>
+        <button type="submit">Reserve</button>
+    </form>
+</body>
+</html>

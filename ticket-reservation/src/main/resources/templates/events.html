@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Event List</title>
+</head>
+<body>
+    <h1>Events</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Remaining Seats</th>
+                <th>Performance Date</th>
+                <th>Reserve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="event : ${events}">
+                <td th:text="${event.name}"></td>
+                <td th:text="${event.remainingSeats}"></td>
+                <td th:text="${event.performanceDate}"></td>
+                <td><a th:href="@{/reserve/{id}(id=${event.id})}">Reserve</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

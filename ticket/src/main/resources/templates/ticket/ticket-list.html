@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tickets</title>
+</head>
+<body>
+    <h1>Available Tickets</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Total Seats</th>
+                <th>Remaining Seats</th>
+                <th>Performance Date</th>
+                <th>Booking Open Time</th>
+                <th>Reserve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ticket : ${tickets}">
+                <td th:text="${ticket.eventName}"></td>
+                <td th:text="${ticket.totalSeats}"></td>
+                <td th:text="${ticket.remainingSeats}"></td>
+                <td th:text="${ticket.performanceDate}"></td>
+                <td th:text="${ticket.bookingOpenTime}"></td>
+                <td>
+                    <form th:action="@{/ticket/reserve/{id}(id=${ticket.id})}" method="post">
+                        <button type="submit" th:disabled="${ticket.remainingSeats == 0}">Reserve</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/">Back to Home</a>
+</body>
+</html>
