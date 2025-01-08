@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Favorites</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <a href="/my-reservations" class="btn btn-primary">내예약으로 돌아가기</a>
+    <h1 class="text-center">즐겨찾기</h1>
+        <div th:if="${message}" class="alert alert-info">
+        <p th:text="${message}"></p>
+    </div>
+
+    <div th:if="${favorites.isEmpty()}">
+        <p>즐겨찾기 목록이 없습니다.</p>
+    </div>
+    
+    <div th:each="favorite : ${favorites}">
+        <img th:src="@{/images/{imageName}(imageName=${favorite.event.image})}" alt="Event Image" style="width:200px;height:auto;">
+        <p><strong>공연:</strong> <span th:text="${favorite.event.name}"></span></p>
+        <p><strong>공연 일시:</strong> <span th:text="${favorite.event.performanceDate}"></span></p>
+        <p><strong>메모:</strong> <span th:text="${favorite.note}"></span></p>
+
+        <form th:action="@{/update-favorite/{id}(id=${favorite.id})}" method="post">
+            <input type="text" name="note" placeholder="메모..." required>
+            <button type="submit" class="btn btn-primary">메모 작성</button>
+        </form>
+        <form th:action="@{/delete-note/{id}(id=${favorite.id})}" method="post">
+            <button type="submit" class="btn btn-danger">메모 삭제</button>
+        </form>
+        <br>
+        <form th:action="@{/delete-favorite/{id}(id=${favorite.id})}" method="post">
+            <button type="submit" class="btn btn-danger">즐겨찾기 취소</button>
+        </form>
+        <hr>
+    </div>
+    
+</div>
+</body>
+</html>

@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-
+<div th:if="${message}" class="alert alert-info">
+    <p th:text="${message}"></p>
+</div>
 <div class="container mt-5">
+    <a href="/my-favorites" class="btn btn-primary">즐겨찾기</a>
     <h1 class="text-center">내 예약</h1>
     <form th:action="@{/my-reservations/search}" method="get" class="mb-4">
         <div class="input-group">
@@ -27,6 +30,7 @@
                         <th>예매한 좌석</th>
                         <th>공연 일시</th>
                         <th>남은 좌석</th>
+                        <th>즐겨찾기</th>
                         <th>비고</th>
                     </tr>
                 </thead>
@@ -36,6 +40,12 @@
                         <td th:text="${reservation.tickets}"></td>
                         <td th:text="${reservation.event.performanceDate}"></td>
                         <td th:text="${reservation.event.remainingSeats}"></td>
+                        <td>
+                            <form th:action="@{/add-to-favorites}" method="post">
+            					<input type="hidden" name="eventId" th:value="${reservation.event.id}">
+            					<button type="submit" class="btn btn-primary">즐겨찾기 추가</button>
+       						 </form>
+                        </td>
                         <td>
                             <form th:action="@{/cancel-reservation/{reservationId}(reservationId=${reservation.id})}" method="post">
                                 <button type="submit" class="btn btn-danger">취소</button>
