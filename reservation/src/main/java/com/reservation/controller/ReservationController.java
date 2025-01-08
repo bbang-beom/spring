@@ -45,32 +45,28 @@ public class ReservationController {
         return "eventDetails";
     }
     
- // 예약 처리 후 결과 페이지로 이동
     @PostMapping("/reserve/{eventId}")
     public String processReservation(@PathVariable Long eventId, @RequestParam int tickets, Model model) {
         Optional<Event> eventOpt = eventRepository.findById(eventId);
         if (eventOpt.isPresent()) {
             Event event = eventOpt.get();
             if (event.getRemainingSeats() >= tickets) {
-                // 예매 가능하면 예약 처리
                 Reservation reservation = new Reservation("Anonymous", "test@example.com", tickets, event);
                 reservationRepository.save(reservation);
 
-                // 남은 좌석 수 업데이트
                 event.setRemainingSeats(event.getRemainingSeats() - tickets);
                 eventRepository.save(event);
 
-                // 예약 결과를 모델에 전달
                 model.addAttribute("reservation", reservation);
                 model.addAttribute("event", event);
 
-                return "reservationResult";  // 예약 결과 페이지로 이동
+                return "reservationResult";  
             } else {
-                // 예매 불가능한 경우
-                return "error";  // 예매 불가 페이지로 이동 (선택 사항)
+               
+                return "error";  
             }
         }
-        return "redirect:/";  // 이벤트가 없으면 홈으로 리다이렉트
+        return "redirect:/"; 
     }
 
     @GetMapping("/reserve/{eventId}")
@@ -109,5 +105,19 @@ public class ReservationController {
         }
 
         return "redirect:/my-reservations"; 
+    }
+    
+    @GetMapping("/search")
+    public String searchEvents(@RequestParam String keyword, Model model) {
+        List<Event> searchResults = eventRepository.findByNameContainingIgnoreCase(keyword);
+        model.addAttribute("events", searchResults);
+        return "index";
+    }
+    
+    @GetMapping("/my-reservations/search")
+    public String searchMyReservations(@RequestParam String keyword, Model model) {
+        List<Reservation> searchResults = reservationRepository.findByEvent_NameContainingIgnoreCase(keyword);
+        model.addAttribute("reservations", searchResults);
+        return "myreservations";
     }
 }

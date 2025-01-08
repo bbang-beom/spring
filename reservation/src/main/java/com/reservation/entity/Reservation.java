@@ -26,10 +26,8 @@ public class Reservation {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    // 기본 생성자 (JPA에서 필요)
     public Reservation() {}
 
-    // 파라미터화된 생성자 (Lombok @AllArgsConstructor 또는 수동 생성)
     public Reservation(String name, String email, int tickets, Event event) {
         this.name = name;
         this.email = email;

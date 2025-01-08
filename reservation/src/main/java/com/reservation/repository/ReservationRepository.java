@@ -9,4 +9,5 @@ import com.reservation.entity.Reservation;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByEvent(Event event);
+    List<Reservation> findByEvent_NameContainingIgnoreCase(String keyword);
 }
